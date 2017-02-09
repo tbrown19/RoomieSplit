@@ -1,0 +1,116 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Roomie Split - Split the Cost of Rent</title>
+    <meta name="description" content="The HTML5 Herald">
+    <meta name="author" content="SitePoint">
+
+    <link rel="stylesheet" href="css/styles-old.css">
+    <link href="https://fonts.googleapis.com/css?family=Bungee|Play" rel="stylesheet">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <h1 id="site_header">Roomie Split</h1>
+    <div id="links_container">
+        <ul class = "links">
+          <li><a href="/">Home</a></li>
+          <li><a href="explanation.html">Explanation</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+    </div>
+    <div id="container">
+        <div id = "how_to">
+            <h3>How To</h3>
+            <ul>
+                <li>Fill out the three fields that represent the entire floor plan</li>
+                <li>Enter each room's square footage or enter the length and width</li>
+                <li>Tip: You can add extra square footage to a room if they have desirable features
+                    <ul>
+                        <li>
+                            Example 1: A room has an extra window so add 10 extra square feet to its total
+                        </li>
+                        <li>
+                            Example 2: A room has a private bathroom so add the square footage of that bathroom
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <div id = "confirm_button">
+                Got it
+            </div>
+        </div>
+
+        <div id="text_inputs">
+            <div class="input_area">
+                <h2 class="large_input">Number of Bedrooms: </h2>
+                <input type="text" class="text-line" id="roomate_line"/>
+            </div>
+            <br>
+            <div class="input_area">
+                <h2 class="large_input">Total Rent: </h2>
+                <input type="text" class="text-line" id="rent_line"/>
+            </div>
+            <br>
+            <div class="input_area">
+                <h2 class="large_input">Square Footage: </h2>
+                <input type="text" class="text-line" id="footage_line"/>
+            </div>
+        </div>
+
+
+        <div id="rooms_list">
+            <table id="rooms_table">
+                <col width="10%">
+                <col width="20%">
+                <col width="20%">
+                <col width="10%">
+                <col width="10%">
+                <col width="15%">
+                <col width="15%">
+                <tr>
+                    <th>Room Number</th>
+                    <th>Length</th>
+                    <th>Width</th>
+                    <th>Square Footage</th>
+                    <!-- <th>% of Livable Area</th> !-->
+                    <th>% of Total Area</th>
+                    <th>Occupants</th>
+                    <th>Payment</th>
+                </tr>
+
+
+            </table>
+        </div>
+    </div>
+    <!-- Future ad placement maybe?
+
+    <div id="bottom_banner">
+        <img src="http://placehold.it/750x150">
+
+    </div>
+    !-->
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script src="js/scripts.js"></script>
+</body>
+
+</html>
