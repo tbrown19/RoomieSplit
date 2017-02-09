@@ -9,25 +9,185 @@
 	<meta name="description" content="Calculate how much each person should pay for rent.">
 	<meta name="author" content="Tyler Brown">
 
-	<link rel="stylesheet" href="css/styles.css">
-	<link href="https://fonts.googleapis.com/css?family=Bungee|Play" rel="stylesheet">
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
+	<link rel="stylesheet" href="css/styles.css">
+
+
+	<!-- Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Lato|Righteous|Roboto" rel="stylesheet">
 
 	<!--[if lt IE 9]>
 	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-	<style>
-
-	</style>
 </head>
 
 <body>
+
+
 <div class="container">
-	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
-			test
+
+
+	<div class="row header-row">
+		<div class="col-md-12" id="navAndHead">
+			<h1 id="headName">Roomie Split</h1>
+			<div class="links">
+				<a href="explanation.html">Explanation</a>
+			</div>
+		</div>
+	</div>
+
+	<!--<div class="modal fade" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header" style="background:#f6b33d -moz-linear-gradient(center top , #f6b33d 5%, #d29105 100%) repeat scroll 0 0;">
+					<a class="close" data-dismiss="modal">×</a>
+					<h3>Please Note:</h3>
+				</div>
+				<div class="modal-body">
+					<p>You can put whatever text you want in here... or form or whatever you want..</p>
+				</div>
+			</div>
+		</div>
+	</div>-->
+
+	<div class="row mainContainerArea">
+		<!--<div class="row helpRow">
+			<div class="col-md-8 col-md-offset-2">
+				<a class="btn btn-default helpButton" data-toggle="modal" href="#myModal">How To Use</a>
+			</div>
+		</div>-->
+		<div class="row inputsRow">
+			<div class="col-md-12">
+				<form class="form-inline" id="calculationForm">
+					<span id="formPreText"> Enter the </span>
+					<div>
+						<label for="numRoomsInput">
+							<span class="inputLabelSpan">Rooms</span>
+							<br>
+							<input type="number" class="calcInput" id="numRoomsInput"
+							       max="10" placeholder="Number of rooms">
+						</label>
+
+					</div>
+
+					<div>
+						<label for="numRoomsInput">
+							<span class="inputLabelSpan">Square Footage</span>
+							<br>
+							<input type="number" class="calcInput" id="footageInput"
+							       placeholder="Total Square Footage">
+						</label>
+
+					</div>
+
+					<div>
+						<label for="numRoomsInput">
+							<span class="inputLabelSpan">Rent</span>
+							<br>
+							<input type="number" class="calcInput" id="rentInput"
+							       placeholder="Rent Price">
+						</label>
+
+					</div>
+
+					<!--<span id="formPreText"> Help</span>-->
+
+				</form>
+			</div>
+		</div>
+
+		<div class="row tableRow">
+			<table id="rooms_table" class="table table-responsive">
+				<colgroup>
+					<col width="5%">
+					<col width="10%">
+					<col width="10%">
+					<col width="15%">
+					<col width="10%">
+					<col width="15%">
+				</colgroup>
+
+				<thead id="tableHeader">
+				<tr>
+					<th width="10%">Room</th>
+					<th width="10%">Length</th>
+					<th width="10%">Width</th>
+					<th width="15%">Square Ft</th>
+					<th width="10%">Occupants</th>
+					<th width="15%">Payment</th>
+				</tr>
+				</thead>
+				<tbody>
+					<tr class="roomRow">
+						<td>1</td>
+
+						<td id="lengthInputs">
+							<input type="number"
+							       min="1"
+							       max="99"
+							       id="lengthFtInput"
+							       placeholder="0">
+							<label for="lengthFtInput">
+								ft
+							</label>
+							<label>
+								<input type="number"
+								       min="1"
+								       max="99"
+								       id="lengthInInput"
+								       placeholder="0">
+								in
+							</label>
+
+						</td>
+
+						<td id="widthInputs">
+							<label>
+								<input type="number"
+								       min="1"
+								       max="99"
+								       id="widthFtInput"
+								       placeholder="0">
+								ft
+							</label>
+							<label>
+								<input type="number"
+								       min="1"
+								       max="99"
+								       id="widthInInput"
+								       placeholder="0">
+								in
+							</label>
+
+						</td>
+
+
+						<td>
+							<input type="number"
+						           min="1"
+						           max="1500"
+						           id="sqFtInput"
+						           placeholder="0">
+						</td>
+
+						<td>
+							<input type="number"
+							       min="1"
+							       max="4"
+							       id="occsInput"
+							       placeholder="0">
+						</td>
+
+						<td>1</td>
+
+
+					</tr>
+
+
+				</tbody>
+			</table>
 		</div>
 	</div>
 </div>
