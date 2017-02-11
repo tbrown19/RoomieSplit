@@ -3,14 +3,14 @@
     font-family: 'Lato', sans-serif;
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
     background-color: #FDFFFC;
+    margin-bottom: 100px;
+
 }
-
-
 
 .mainContainerArea {
     border-top: 3px solid #E71D36;
     padding-top: 5px;
-    min-height: 75vh;
+    min-height: 70vh;
     margin: 0px 10px 15px 10px;
 }
 
@@ -78,17 +78,14 @@ html body {
     font-size: 1.5em;
     padding: 5px;
     margin: 10px;
-    border: none;
-    border-bottom: 2px solid black;
-    border-top: 2px solid black;
-    transition: padding 0.25s ease;
+    border: 3px solid transparent;
+    border-bottom-color: black;
+    transition: border 0.25s ease;
 }
 
 .calcInput:focus{
     outline: none;
     border: none;
-    border-bottom: 2px solid #011627;
-    border-top: 2px solid #011627;
 }
 
 
@@ -115,6 +112,7 @@ html body {
     font-size: 1.4em;
     color: #011627;
     display: none;
+    transition: display 5s ease;
 }
 
 .tableRow {
@@ -152,6 +150,10 @@ td{
     justify-content: flex-end;
     align-items: flex-end;
     border-bottom: 2px solid #011627;
+}
+
+tbody .roomRow:last-child {
+    border-bottom: none;
 }
 
 .roomRow td input{

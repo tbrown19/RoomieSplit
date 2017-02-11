@@ -1,32 +1,34 @@
 $(document).ready(function () {
 	$(".tableRow").hide();
 });
+var $table = $("#rooms_table");
 
-$('#numRoomsInput').on('input', function () {
+$('#numRoomsInput').on('input focusout', function (event) {
 	var $tableRow = $(".tableRow");
-	var $table = $("#rooms_table");
 	var numRooms = $(this).val();
 
 	//Removes all trs so it can start fresh
 	$table.find("tr:gt(0)").remove();
 	//Then show the table
-	$tableRow.fadeIn("slow");
-
-
 
 	//Let the user know if they enter a non allowed value for roommates
 	//Clear the values if they do
 	if (numRooms > 10 || numRooms < 1 || !isInt($(this).val())) {
-		numRooms = 0;
 		$(this).val("");
 		$tableRow.fadeOut("slow");
+	}
+	else {
+		//We display the table once they leave the input
+		if(event.type === 'focusout'){
+			$tableRow.fadeIn("slow");
+		}
 	}
 
 	//If they enter a correct value, loop VAL times
 	for (var i = 1; i < parseInt(numRooms) + 1; i++) {
-		var dimensionAttrs = {type: 'number', min:'1', max: '99', placeholder: '0'};
-		var dimensionNames = ['length', 'width'];
-		var dimensionMeasures = ['Ft', 'In'];
+		var inputAttrs = {class:'footage', type: 'number', min: '1', max: '99', placeholder: '0'};
+		var dimensionNames = ['Length', 'Width'];
+		var dimensionMeasures = ['ft', 'in'];
 		//We create a new tr each time through the loop.
 		var $newTableRow = $('<tr>').attr('class', 'roomRow');
 
@@ -35,11 +37,12 @@ $('#numRoomsInput').on('input', function () {
 
 		//Loop through creating a width and length column
 		dimensionNames.forEach(function (dimension) {
-			var $newDimensionTd = $('<td>');
+			var $newDimensionTd = $('<td>').attr('class', 'footage');
 			//Then append a ft and in input to each td
 			dimensionMeasures.forEach(function (measure) {
-				var $input = $('<input>').attr('id', dimension + measure + 'input');
-				$input.attr(dimensionAttrs);
+				var $input = $('<input>').attr('id', measure + dimension  + 'Input' + i);
+				$input.attr(inputAttrs);
+
 				//Append the newly created input to the td
 				$newDimensionTd.append($input);
 				//Add a label to the input with what the current measurement is.
@@ -48,139 +51,139 @@ $('#numRoomsInput').on('input', function () {
 			//Append the newly created td to the table row
 			$newTableRow.append($newDimensionTd);
 		});
+		//Append the sq footage td to the new table row.
+		($('<td>').append(
+			$('<input>').attr({
+				id:'sqFtInput' + i, class: "sqFtInput", type: "number", min: "1", max: "1500", placeholder: "0"
+			})
+		)).appendTo($newTableRow);
+		//Append the occupants td to the new table row.
+		($('<td>').append(
+			$('<input>').attr({
+				id:'occsInput' + i, class: "occsInput", type: "number", min: "1", max: "4", placeholder: "0"
+			})
+		)).appendTo($newTableRow);
 
+		//Append payment td text, with a default of 0.
+		($('<td>').attr('id', 'percentTotal' + i).text(0)).appendTo($newTableRow);
 
-
-
-
-
+		($('<td>').attr('class', 'payment').text(0)).appendTo($newTableRow);
 
 
 
 		$table.append($newTableRow);
-
-
-
-		//Show the table and select it
-
-		// $("#rooms_table").show(0).find('tbody')
-		// //Begin the adding of all the differnt trs and tds
-		// //Start of room number column
-		// 	var $td =
-		// 	.append($('<tr>')
-		// 			.attr('class', 'roomRow')
-		// 			//Add the room number column.
-		// 			.append($('<td>').text(i))
-		//
-		// 			//Start of room length column
-		// 			.append($('<td>')
-		// 				.append($('<input>').attr('id','lengthFtInput')
-		// 					.attr(roomDimensionAttrs).after($('<label>')).attr('for','lengthFtInput').text('ft')
-		// 				)
-		// 			)
-		//
-		//
-		// 		//End of room length column
-		// 		/*
-		// 		 //Start of square footge column
-		// 		 //  .append($('<td>')
-		// 		 //    .attr('class','sqFt')
-		// 		 //      .text(""))
-		// 		 //End of square footge column
-		//
-		// 		 //Start of square footge column
-		// 		 .append($('<td>')
-		// 		 .append($('<input>')
-		// 		 .attr('class', 'mini_text_line sqFt', 'type', 'text')
-		// 		 .val("")))
-		// 		 //End of square footge column
-		// 		 //Start of % of total column
-		// 		 .append($('<td>')
-		// 		 .attr('class', 'perTotal')
-		// 		 .text(""))
-		// 		 //End of % of total column
-		//
-		// 		 //Start of occupants column
-		// 		 .append($('<td>')
-		// 		 .append($('<input>')
-		// 		 .attr('class', 'mini_text_line occupants', 'type', 'text')))
-		// 		 //End of occupants column
-		//
-		// 		 //Start of payment column
-		// 		 .append($('<td>')
-		// 		 .attr('class', 'payment')
-		// 		 .text(""))
-		// 		 //End of payment column*/
-		// 	);
 	}
 
+});
+
+$('#footageInput').on('input focusout', function (event) {
+	$(".roomRow").each(function () {
+		var row = $(this);
+		update_row_square_footage(row);
+	});
+});
+
+$('#rentInput').on('input focusout', function (event) {
 
 });
 
 //Checks for input in the footage areas
-$('#rooms_table').on('input', '.footage', function () {
-	$(this).closest('tr').find('input.sqFt').attr("disabled", true);
-	//Check to see if the value is inches(true) or feet(false)
-	//Then get that value
-	var str = ($(this).attr('class'));
-	var inches = str.includes("In");
-	var val = $(this).val();
-
-	//If an int is not entered, then clear the field
-	if (!isInt(val)) {
-		$(this).val("");
+$table.on('input change',function(e){
+	//Check for which input value has been targeted.
+	var target = e.target;
+	var inputObject = $('#' + target.id);
+	if( target.id.slice(0,2) === 'ft'){
+		handle_ft_input(inputObject);
 	}
-	//Allow the inches field to go to 2 digits
-	if (inches & val.length > 2 || inches & val > 12) {
-		val = 0;
-		$(this).val("");
-		$(this).closest('tr').find('td.perTotal').text(" ");
-		$(this).closest('tr').find('input.sqFt').val("");
+	else if(target.id.slice(0,2) === 'in') {
+		handle_in_input(inputObject);
 	}
-	//Allow the feet field to go to 3 digits
-	else if (!inches & val.length > 2) {
-		val = 0;
-		$(this).val("");
-		$(this).closest('tr').find('td.perTotal').text(" ");
-		$(this).closest('tr').find('input.sqFt').val("");
+	else if(target.className === 'sqFtInput') {
+		handle_sqFt_input(inputObject);
 	}
-	else {
-		//Assign the object to a variable and pass it to the calculation function
-		var footage = $(this);
-		calculate_footage(footage, false);
-		update_payments();
+	else if(target.className === 'occsInput') {
+		handle_occs_input(inputObject);
 	}
-
-	//If the value fields are empty, renable the ability to type in square footage
-	if (val.length === 0 || val === 0) {
-		$(this).closest('tr').find('input.sqFt').attr("disabled", false);
-		$(this).closest('tr').find('td.perTotal').text(" ");
-		$(this).closest('tr').find('input.sqFt').val("");
-
-	}
-
 
 });
 
-//Checks for input in the occupants areas
-$('#rooms_table').on('input', '.occupants', function () {
-	//Make sure the user isn't entering a number longer than 2 digits, or a float
-	if (!isInt($(this).val()) || $(this).val().length > 2) {
-		$(this).val("");
-	}
 
-	update_payments();
-});
+function handle_ft_input(curInput) {
+	var validInputs = [1, 99];
+	var validInput = check_valid_input(curInput, curInput.val(), validInputs);
+	handle_footage_input(curInput, validInput);
+}
+
+function handle_in_input(curInput) {
+	var validInputs = [1, 12];
+	var validInput = check_valid_input(curInput, curInput.val(), validInputs);
+	handle_footage_input(curInput, validInput);
+}
+
+function handle_footage_input(curInput, validInput){
+	//Get the current row and then pass it to the update square footage method for that to handle the updating.
+	var curRow = curInput.parent().parent();
+	update_row_square_footage(curRow, validInput);
+}
+
+function handle_sqFt_input(curInput) {
+	var validInputs = [1, 999];
+	var validInput = check_valid_input(curInput, curInput.val(), validInputs);
+	var currentRow = curInput.parent().parent();
+	display_manual_footage_inputs(currentRow, validInput);
+	update_row_percent_total(currentRow, curInput.val());
+}
+
+function handle_occs_input(curInput) {
+	var validInputs = [1, 5];
+	check_valid_input(curInput, curInput.val(), validInputs);
+}
+
+function update_row_square_footage(row, validInput){
+	var $sqFootageTD = row.find('input.sqFtInput');
+	//Calculate the sqft, and then place that in the square footage table data, then pass the footage to update % total.
+	//If we already have the value calculated, then just use that, if the value ends up being 0, we want to use a blank instead.
+	var footage = $sqFootageTD.val() || calculate_footage(row) || '';
+	$sqFootageTD.val(footage);
+	$sqFootageTD.attr('disabled', validInput);
+	update_row_percent_total(row, footage);
+}
+
+function update_row_percent_total(row, footage){
+	var $percentTotalTD = row.find('[id^=percentTotal]');
+	//Calculate the square footage from what the user has entered, and get the total.
+	var totalFootage = $('#footageInput').val();
+	var percentOfTotal = calculate_percent_of_total(footage,totalFootage);
+	$percentTotalTD.text(percentOfTotal);
+}
+
+function update_row_payment(row)
+
+
+function check_valid_input(curInput, val, allowedInputs){
+	//Make sure the input value is an int and in the allowed range.
+	if(isInt(val) && allowedInputs[0] <= val && val <= allowedInputs[1]) {
+		return true;
+	}
+	else{
+		//If the value is incorrect, then we want to reset it.
+		curInput.val("");
+		return false
+	}
+}
+
+function display_manual_footage_inputs(row, disabled){
+	var visibility = disabled ? 'hidden' : 'visible';
+	//Hide or show the inputs and labels.
+	row.find("input.footage").css('visibility', visibility);
+	row.find("label").css('visibility', visibility);
+}
 
 //Update all values in the footage and percent of total columns
 $('#footage_line').on('input', function () {
 	if (!isInt($(this).val()) || isNaN($(this).val()) || $(this).val().length > 5) {
 		$(this).val("");
 	}
-	$(".footage").each(function (index) {
-		var row = $(this);
-		calculate_footage(row);
-	});
 	update_payments();
 
 });
@@ -193,50 +196,9 @@ $('#rent_line').on('input', function () {
 	update_payments();
 });
 
-//Checks for input in the square footage area
-$('#rooms_table').on('input', '.occupants', function () {
-	//Make sure the user isn't entering a number longer than 2 digits, or a float
-	if (!isInt($(this).val()) || $(this).val().length > 2) {
-		$(this).val("");
-	}
-
-	update_payments();
-});
-
-$('#rooms_table').on('input', '.sqFt', function () {
-	//Make sure an acceptable value is entered
-	if (!isInt($(this).val()) || $(this).val().length > 4) {
-		$(this).val("");
-	}
-
-	//If a value has been manually entered into the square footage field
-	//Then hide the two manual footage fields
-	//If they delete the value, then reshow the manual footage fields
-	if ($(this).val().length !== 0) {
-		$(this).closest('tr').find('input.footage').hide();
-		$(this).closest('tr').find('span').hide();
-	}
-	else {
-		$(this).closest('tr').find('input.footage').show();
-		$(this).closest('tr').find('span').show();
-	}
-	var footage = $(this);
-	calculate_footage(footage, true);
-	update_payments();
-
-});
-
-$("#confirm_button").click(function () {
-	$("#how_to").slideUp(500);
-});
-
-
-//Update all the payment catagories
-function update_payments() {
-	$(".occupants").each(function (index) {
-		var occupants = $(this);
-		calculate_rent(occupants);
-	});
+//Round a number to two digits and return it.
+function round_to_two_digits(number){
+	return Math.round(number * 100) / 100;
 }
 
 //Check if a number is a whole number
@@ -244,67 +206,46 @@ function isInt(n) {
 	return n % 1 === 0;
 }
 
+//Update all the payment categories
+function update_payments() {
+	$(".occsInput").each(function (index) {
+		console.log('derp??');
+		var occupants = $(this);
+		calculate_rent(occupants);
+	});
+}
+
 //Calculate the area of a room based on the provided inputs
-function calculate_area(row) {
-	var lenFt = parseInt(row.closest('tr').find("input.lenFt").val());
-	var lenIn = parseFloat(row.closest('tr').find("input.lenIn").val() / 12);
-	var widFt = parseFloat(row.closest('tr').find("input.widFt").val());
-	var widIn = parseFloat(row.closest('tr').find("input.widIn").val() / 12);
+function calculate_footage(row) {
+	//Get all the values we need to calculate the footage.
+	var widFt = parseInt(row.find("[id^=ftWidthInput]").val());
+	console.log(row);
+	var widIn = parseFloat(row.find("[id^=inWidthInput]").val() / 12);
+	var	lenFt = parseInt(row.find("[id^=ftLengthInput]").val());
+	var lenIn = parseFloat(row.find("[id^=inLengthInput]").val() / 12);
 
 	//Try lenFt or if its nan change it to zero then add to lenIn
 	//Then round it to two digits
-	var totLen = (lenFt || 0) + lenIn;
-	totLen = Math.round(totLen * 100) / 100;
-
-	var totWid = (widFt || 0) + widIn;
-	totWid = Math.round(totWid * 100) / 100;
-
-	//Find square footage and then round, if other values haven't been entered
-	//Use one in the meantime
-	var sqFootage = Math.round(((totLen || 1) * (totWid || 1)) * 100) / 100;
-	if (totLen === 0 & totWid === 0) {
-		sqFootage = 0;
-	}
-
-	//If the value is still 0 after the previous calculations it means
-	//that square footage must have already been calculated
-	//So just get that value and return it
-	if (sqFootage === 0) {
-		sqFootage = row.closest('tr').find('.sqFt').val();
-	}
-	return sqFootage;
+	var totLen = round_to_two_digits((lenFt || 0) + lenIn);
+	var totWid = round_to_two_digits((widFt || 0) + widIn);
+	return round_to_two_digits((totLen) * (totWid));
 }
 
-//Calculate the footage based off of values passed to it
-function calculate_footage(footage, manually_entered) {
-	if (!manually_entered) {
-		console.log("needed to find");
-		sqFootage = calculate_area(footage);
+function calculate_percent_of_total(value, totalValue) {
+	var percentTotal = round_to_two_digits(value / totalValue * 100) || 0;
+	if(!isFinite(percentTotal)){
+		percentTotal = 0;
 	}
-	else {
-		console.log("already provided");
-		sqFootage = footage.val();
-	}
-	footage.closest('tr').find('.sqFt').val(sqFootage);
-
-	//Get the total square footage and find out each persons share of it
-	var totalFt = $('#footage_line').val() || sqFootage;
-	console.log($('#footage_line').val());
-	console.log("total ft" + totalFt);
-	var percent_of_total = sqFootage / totalFt * 100;
-	percent_of_total = Math.round(percent_of_total * 100) / 100;
-	console.log(percent_of_total);
-	footage.closest('tr').children('td.perTotal').text(percent_of_total || "");
-
+	return percentTotal;
 }
 
 //Handles rent based on total percentages
 function calculate_rent(occupants) {
-	var total_rent = $('#rent_line').val() || 0;
+	var total_rent = $('#rentInput').val() || 0;
 
 	//Get the number of occupants
 	var num_occupants = 0;
-	$(".occupants").each(function (index) {
+	$(".occsInput").each(function (index) {
 		num_occupants += parseInt($(this).val()) || 0;
 	});
 
@@ -330,7 +271,7 @@ function calculate_rent(occupants) {
 	total_rent = total_rent - (indv_base_payment * num_occupants || 1);
 
 	//Figure out what percentage of the private space does the occupant have
-	var indv_private_space = calculate_area(occupants) / occupants.val();
+	var indv_private_space = calculate_footage(occupants) / occupants.val();
 	var percent_of_private = indv_private_space / private_space;
 
 	//Calculate how much rent should be paid based on the private percentage
@@ -355,10 +296,7 @@ $(".calcInput").on('click focus focusout', function (event) {
 	//Show that they are on this selection.
 	if (event.type === 'click' || event.type === 'focus') {
 		$(this).css({
-			'border-left': '2px solid #011627',
-			'border-right': '2px solid #011627',
-			'padding-top': '10px',
-			'padding-bottom': '10px'
+			'border': '3px solid #011627',
 		});
 
 	}
@@ -368,20 +306,15 @@ $(".calcInput").on('click focus focusout', function (event) {
 		//If they enter a value we don't except, go back to the original input
 		if (inputVal < 0 || inputVal === '') {
 			$(this).css({
-				'border-color': '#011627',
-				'border-left': 'none',
-				'border-right': 'none',
-				'padding-top': '5px',
-				'padding-bottom': '5px'
+				'border-color': 'transparent',
+				'border-bottom-color': '#011627'
 			});
 		}
 		//Otherwise we do a bit of styling to show that they entered a correct input.
 		else {
 			console.log($(this).prev().prev().css('display', 'inline'));
 			$(this).css({
-				'border': '3px solid #43A047',
-				'padding-top': '5px',
-				'padding-bottom': '5px'
+				'border': '3px solid #43A047'
 			});
 		}
 
