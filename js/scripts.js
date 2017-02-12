@@ -67,7 +67,7 @@ $('#numRoomsInput').on('input focusout', function (event) {
 		//Append payment td text, with a default of 0.
 		($('<td>').attr('id', 'percentTotal' + i).text(0)).appendTo($newTableRow);
 
-		($('<td>').attr('class', 'payment').text(0)).appendTo($newTableRow);
+		($('<td>').attr('id', 'payment' + i).text(0)).appendTo($newTableRow);
 
 
 
@@ -104,6 +104,7 @@ $table.on('input change',function(e){
 	else if(target.className === 'occsInput') {
 		handle_occs_input(inputObject);
 	}
+	update_payments();
 
 });
 
@@ -136,6 +137,7 @@ function handle_sqFt_input(curInput) {
 
 function handle_occs_input(curInput) {
 	var validInputs = [1, 5];
+	var currentRow = curInput.parent().parent();
 	check_valid_input(curInput, curInput.val(), validInputs);
 }
 
@@ -157,7 +159,56 @@ function update_row_percent_total(row, footage){
 	$percentTotalTD.text(percentOfTotal);
 }
 
-function update_row_payment(row)
+function update_row_payment(row){
+	var curRoomFootage = row.find('input.sqFtInput').val();
+	var numOfOccupants = row.find('input.occsInput').val();
+
+	var total_rent = $('#rentInput').val() || 0;
+	//Get the number of occupants
+	var num_occupants = 0;
+	$(".occsInput").each(function (index) {
+		num_occupants += parseInt($(this).val()) || 0;
+	});
+	console.log(num_occupants);
+
+	//Get the livable space amount
+	var private_space = 0;
+	$(".sqFtInput").each(function (index) {
+		private_space += parseFloat($(this).val()) || 0;
+	});
+	console.log(private_space );
+
+	//Figure out how much of the apartment is shared space
+	var all_space = $('#footageInput').val() || 0;
+	var common_space = all_space - private_space;
+	var percent_shared = common_space / all_space;
+
+	//The base payment is what everyone pays based on the percentage of the
+	//floor plan that is shared space
+	var base_payment = percent_shared * total_rent;
+	var indv_base_payment = base_payment / num_occupants;
+
+	//Remove the base payment from the total rent to find out how much is still
+	//left to be paid
+	total_rent = total_rent - (indv_base_payment * num_occupants || 1);
+
+	//Figure out what percentage of the private space does the occupant have
+	var indv_private_space = curRoomFootage / numOfOccupants;
+	var percent_of_private = indv_private_space / private_space;
+
+	//Calculate how much rent should be paid based on the private percentage
+	var indv_private_payment = (percent_of_private * total_rent);
+	var indv_total_payment = indv_base_payment + indv_private_payment;
+
+	//If payment is infinity(ish) or NaN set to 0
+	if (!isFinite(indv_total_payment) || isNaN(indv_total_payment)) {
+		indv_total_payment = 0;
+	}
+
+	//Round the rent and then display it
+	indv_total_payment = Math.round(indv_total_payment * 100) / 100;
+	row.find("[id^=payment]").text(indv_total_payment);
+}
 
 
 function check_valid_input(curInput, val, allowedInputs){
@@ -196,22 +247,10 @@ $('#rent_line').on('input', function () {
 	update_payments();
 });
 
-//Round a number to two digits and return it.
-function round_to_two_digits(number){
-	return Math.round(number * 100) / 100;
-}
-
-//Check if a number is a whole number
-function isInt(n) {
-	return n % 1 === 0;
-}
-
 //Update all the payment categories
 function update_payments() {
-	$(".occsInput").each(function (index) {
-		console.log('derp??');
-		var occupants = $(this);
-		calculate_rent(occupants);
+	$(".roomRow").each(function (index) {
+		update_row_payment($(this));
 	});
 }
 
@@ -219,7 +258,6 @@ function update_payments() {
 function calculate_footage(row) {
 	//Get all the values we need to calculate the footage.
 	var widFt = parseInt(row.find("[id^=ftWidthInput]").val());
-	console.log(row);
 	var widIn = parseFloat(row.find("[id^=inWidthInput]").val() / 12);
 	var	lenFt = parseInt(row.find("[id^=ftLengthInput]").val());
 	var lenIn = parseFloat(row.find("[id^=inLengthInput]").val() / 12);
@@ -238,58 +276,6 @@ function calculate_percent_of_total(value, totalValue) {
 	}
 	return percentTotal;
 }
-
-//Handles rent based on total percentages
-function calculate_rent(occupants) {
-	var total_rent = $('#rentInput').val() || 0;
-
-	//Get the number of occupants
-	var num_occupants = 0;
-	$(".occsInput").each(function (index) {
-		num_occupants += parseInt($(this).val()) || 0;
-	});
-
-	//Get the livable space amount
-	var private_space = 0;
-	$(".sqFt").each(function (index) {
-		private_space += parseFloat($(this).val()) || 0;
-	});
-
-	//Figure out how much of the apartment is shared space
-	var all_space = $('#footage_line').val() || 0;
-	var common_space = all_space - private_space;
-	var percent_shared = common_space / all_space;
-
-	//The base payment is what everyone pays based on the percentage of the
-	//floor plan that is shared space
-	var base_payment = percent_shared * total_rent;
-	var indv_base_payment = base_payment / num_occupants;
-	console.log("indv_base_payment " + indv_base_payment);
-
-	//Remove the base payment from the total rent to find out how much is still
-	//left to be paid
-	total_rent = total_rent - (indv_base_payment * num_occupants || 1);
-
-	//Figure out what percentage of the private space does the occupant have
-	var indv_private_space = calculate_footage(occupants) / occupants.val();
-	var percent_of_private = indv_private_space / private_space;
-
-	//Calculate how much rent should be paid based on the private percentage
-	var indv_private_payment = (percent_of_private * total_rent);
-	var indv_total_payment = indv_base_payment + indv_private_payment;
-	console.log("percent_of_private " + percent_of_private);
-
-
-	//If payment is infinity(ish) or NaN set to 0
-	if (indv_total_payment > 100000000000 || isNaN(indv_total_payment)) {
-		indv_total_payment = 0;
-	}
-
-	//Round the rent and then display it
-	indv_total_payment = Math.round(indv_total_payment * 100) / 100;
-	occupants.closest('tr').children('td.payment').text(indv_total_payment);
-}
-
 
 $(".calcInput").on('click focus focusout', function (event) {
 	//If they click or gain focus, we want to do a little bit of styling to
@@ -322,3 +308,14 @@ $(".calcInput").on('click focus focusout', function (event) {
 	}
 
 });
+
+
+//Round a number to two digits and return it.
+function round_to_two_digits(number){
+	return Math.round(number * 100) / 100;
+}
+
+//Check if a number is a whole number
+function isInt(n) {
+	return n % 1 === 0;
+}
