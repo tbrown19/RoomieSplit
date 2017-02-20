@@ -19,6 +19,10 @@ a:hover, a:visited, a:link, a:active {
     font-family: 'Roboto', sans-serif;
 }
 
+a h1{
+    font-family: 'Righteous', cursive;
+}
+
 #navAndHead{
     margin-left:10px;
     margin-right:10px;
@@ -42,6 +46,7 @@ a:hover, a:visited, a:link, a:active {
 
 .links > a {
     color: #403F4C;
+    margin-right: 10px;
 }
 
 html body {
@@ -69,9 +74,6 @@ html body {
     border-color: #2EC4B6;
 }
 
-#calculationForm{
-}
-
 
 .calcInput{
     font-family: 'Lato', sans-serif;
@@ -81,6 +83,7 @@ html body {
     border: 3px solid transparent;
     border-bottom-color: black;
     transition: border 0.25s ease;
+
 }
 
 .calcInput:focus{
@@ -111,8 +114,8 @@ html body {
     text-align: center;
     font-size: 1.4em;
     color: #011627;
-    display: none;
-    transition: display 5s ease;
+    visibility: hidden;
+    transition: visibility 3s ease;
 }
 
 .tableRow {
@@ -121,6 +124,7 @@ html body {
     max-width: 90%;
     font-size: 1.4em;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    display: none;
 }
 
 #tableHeader {
@@ -167,12 +171,27 @@ tbody .roomRow:last-child {
     outline:none;
 }
 
-
-
-
-
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+
+#aboutContainer{
+    width: 50%;
+    margin: 0 auto;
+    text-align: center;
+    border: 2px solid #011627;
+    margin-top: 10px;
+}
+
+#aboutHead{
+    background: #011627;
+    color: #FDFFFC;
+    padding: 5px;
+    margin-top: 0;
+}
+
+.howToHeader{
+    transition: visibility 3s ease;
 }

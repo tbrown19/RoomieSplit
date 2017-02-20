@@ -6,115 +6,130 @@
     <meta charset="utf-8">
 
     <title>Roomie Split - Split the Cost of Rent</title>
-    <meta name="description" content="The HTML5 Herald">
-    <meta name="author" content="SitePoint">
+    <meta name="description" content="Calculate how much each person should pay for rent.">
+    <meta name="author" content="Tyler Brown">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
     <link rel="stylesheet" href="css/styles.css">
-    <link href="https://fonts.googleapis.com/css?family=Bungee|Play" rel="stylesheet">
 
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Lato|Righteous|Roboto" rel="stylesheet">
 
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
-    <style>
-
-    </style>
+    <![endif]-->
 </head>
 
 <body>
-    <h1 id="site_header">Roomie Split</h1>
-    <div id="links_container">
-        <ul class = "links">
-          <li><a href="/">Home</a></li>
-          <li><a href="explanation.html">Explanation</a></li>
-          <li><a href="about.html">About</a></li>
-        </ul>
-    </div>
-    <div id="container">
-        <div id = "how_it_works">
-            <h3>How It Works</h3>
-            <ul>
-                <li>The Square Footage of all the bedrooms is added up then subtracted from the Total Square Footage </li>
-                <li>This leaves the Common Space of the floor plan.</li>
-                <ul>
-                    <li>
-                        Ex: 1000sqFt total - 550sqFt total of rooms = 450sqFt Common Space
-                    </li>
-                </ul>
-
-                <li>Then the % of Common Space compared to Total Footage is found.</li>
-                <ul>
-                    <li>
-                        Ex: 450sqFt common space / 1000sqFt total = 45% common space
-                    </li>
-                </ul>
-
-                <li>Multiplying Rent by the common space % gives the value of the Common Space.</li>
-                <ul>
-                    <li>
-                        Ex: $1000 Rent * 45% = $450 value for the Common Space
-                    </li>
-                </ul>
-
-                <li>That value is then divided equally by the number of Occupants giving the base rent.</li>
-                <ul>
-                    <li>
-                        Ex: $450 / 5 Occupants = $90 base rent per occupant
-                    </li>
-                </ul>
-
-                <li>The Common Space rent is subtracted from total rent giving the value of private space.</li>
-                <ul>
-                    <li>
-                        Ex: $1000 Rent - $450 = $550 value for the Private Space
-                    </li>
-                </ul>
-
-                <li>The SqFt of each room is dividied by the remaining footage to find its % of private space.</li>
-                <ul>
-                    <li>
-                        Ex: 110sqFt room / 550sqFt private space = 20% of Total Private Space
-                    </li>
-                </ul>
-
-                <li>The % of Private Space is divided by Occupants in that room to find each individuals %.</li>
-                <ul>
-                    <li>
-                        Ex: 20% / 2 Occupants = 10% Private Space for each person in that room
-                    </li>
-                </ul>
-
-                <li>Each person's % private space is multiplied by the remaining rent to get their Private Payment</li>
-                <ul>
-                    <li>
-                        Ex: 10% * $550 remaining rent = $55 Private Payment
-                    </li>
-                </ul>
 
 
-                <li>Each person's Private Payment is added to the Base Payment to get their Total Payment</li>
-                <ul>
-                    <li>
-                        Ex: $90 Base Payment + $55 Private Payment = $145 Total Payment for that individual
-                    </li>
-                </ul>
-
-            </ul>
+<div class="container">
+    <div class="row header-row">
+        <div class="col-md-12" id="navAndHead">
+            <a href="index.html">
+                <h1 id="headName">Roomie Split</h1>
+            </a>
+            <div class="links">
+                <a href="explanation.html">Explanation</a>
+                <a href="about.html">About</a>
+            </div>
         </div>
-
-
     </div>
-    <!-- Future ad placement maybe?
-
-    <div id="bottom_banner">
-        <img src="http://placehold.it/750x150">
-
+    <div class="row mainContainerArea">
+       hi
     </div>
-    !-->
+</div>
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="js/scripts.js"></script>
+<!-- Future ad placement maybe?
+
+<div id="bottom_banner">
+	<img src="http://placehold.it/750x150">
+
+</div>
+!-->
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="js/scripts.js"></script>
 </body>
 
 </html>
+
+
+
+
+<!--<ul>-->
+    <!--<li>The Square Footage of all the bedrooms is added up then subtracted from the Total Square Footage </li>-->
+    <!--<li>This leaves the Common Space of the floor plan.</li>-->
+    <!--<ul>-->
+        <!--<li>-->
+            <!--Ex: 1000sqFt total - 550sqFt total of rooms = 450sqFt Common Space-->
+        <!--</li>-->
+    <!--</ul>-->
+
+    <!--<li>Then the % of Common Space compared to Total Footage is found.</li>-->
+    <!--<ul>-->
+        <!--<li>-->
+            <!--Ex: 450sqFt common space / 1000sqFt total = 45% common space-->
+        <!--</li>-->
+    <!--</ul>-->
+
+    <!--<li>Multiplying Rent by the common space % gives the value of the Common Space.</li>-->
+    <!--<ul>-->
+        <!--<li>-->
+            <!--Ex: $1000 Rent * 45% = $450 value for the Common Space-->
+        <!--</li>-->
+    <!--</ul>-->
+
+    <!--<li>That value is then divided equally by the number of Occupants giving the base rent.</li>-->
+    <!--<ul>-->
+        <!--<li>-->
+            <!--Ex: $450 / 5 Occupants = $90 base rent per occupant-->
+        <!--</li>-->
+    <!--</ul>-->
+
+    <!--<li>The Common Space rent is subtracted from total rent giving the value of private space.</li>-->
+    <!--<ul>-->
+        <!--<li>-->
+            <!--Ex: $1000 Rent - $450 = $550 value for the Private Space-->
+        <!--</li>-->
+    <!--</ul>-->
+
+    <!--<li>The SqFt of each room is dividied by the remaining footage to find its % of private space.</li>-->
+    <!--<ul>-->
+        <!--<li>-->
+            <!--Ex: 110sqFt room / 550sqFt private space = 20% of Total Private Space-->
+        <!--</li>-->
+    <!--</ul>-->
+
+    <!--<li>The % of Private Space is divided by Occupants in that room to find each individuals %.</li>-->
+    <!--<ul>-->
+        <!--<li>-->
+            <!--Ex: 20% / 2 Occupants = 10% Private Space for each person in that room-->
+        <!--</li>-->
+    <!--</ul>-->
+
+    <!--<li>Each person's % private space is multiplied by the remaining rent to get their Private Payment</li>-->
+    <!--<ul>-->
+        <!--<li>-->
+            <!--Ex: 10% * $550 remaining rent = $55 Private Payment-->
+        <!--</li>-->
+    <!--</ul>-->
+
+
+    <!--<li>Each person's Private Payment is added to the Base Payment to get their Total Payment</li>-->
+    <!--<ul>-->
+        <!--<li>-->
+            <!--Ex: $90 Base Payment + $55 Private Payment = $145 Total Payment for that individual-->
+        <!--</li>-->
+    <!--</ul>-->
+
+<!--</ul>-->

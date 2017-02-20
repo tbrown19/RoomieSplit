@@ -1,9 +1,8 @@
-$(document).ready(function () {
-	$(".tableRow").hide();
-});
 var $table = $("#rooms_table");
 
 $('#numRoomsInput').on('input focusout', function (event) {
+	$( ".howToHeader" ).slideUp(500);
+
 	var $tableRow = $(".tableRow");
 	var numRooms = $(this).val();
 
@@ -15,12 +14,14 @@ $('#numRoomsInput').on('input focusout', function (event) {
 	//Clear the values if they do
 	if (numRooms > 10 || numRooms < 1 || !isInt($(this).val())) {
 		$(this).val("");
+		$(this).attr("placeholder", "Must be between 1-10");
+		$(this).parent().find("span").css('visibility','hidden');
 		$tableRow.fadeOut("slow");
 	}
 	else {
 		//We display the table once they leave the input
-		if(event.type === 'focusout'){
-			$tableRow.fadeIn("slow");
+		if(event.type === 'input'){
+			$(this).parent().find("span").css('visibility','visible');
 		}
 	}
 
@@ -77,14 +78,26 @@ $('#numRoomsInput').on('input focusout', function (event) {
 });
 
 $('#footageInput').on('input focusout', function (event) {
-	$(".roomRow").each(function () {
-		var row = $(this);
-		update_row_square_footage(row);
-	});
+	$(this).parent().find("span").css('visibility','visible');
+
+	if (check_valid_primary_inputs($(this), 1, 10000)  && event.type === 'focusout'){
+		update_all_footages();
+		update_all_payments();
+	}
+
 });
 
 $('#rentInput').on('input focusout', function (event) {
+	var $tableRow = $(".tableRow");
+	//Fade the table row in when they start typing.
+	$tableRow.fadeIn("slow");
+	$(this).parent().find("span").css('visibility','visible');
+	//If the enter an invalid input, then fade the table out
+	if(!check_valid_primary_inputs($(this), 1, 25000)){
+		$tableRow.fadeOut("slow");
+	}
 
+	update_all_payments();
 });
 
 //Checks for input in the footage areas
@@ -104,10 +117,9 @@ $table.on('input change',function(e){
 	else if(target.className === 'occsInput') {
 		handle_occs_input(inputObject);
 	}
-	update_payments();
+	update_all_payments();
 
 });
-
 
 function handle_ft_input(curInput) {
 	var validInputs = [1, 99];
@@ -156,6 +168,7 @@ function update_row_percent_total(row, footage){
 	//Calculate the square footage from what the user has entered, and get the total.
 	var totalFootage = $('#footageInput').val();
 	var percentOfTotal = calculate_percent_of_total(footage,totalFootage);
+	console.log(percentOfTotal);
 	$percentTotalTD.text(percentOfTotal);
 }
 
@@ -169,14 +182,12 @@ function update_row_payment(row){
 	$(".occsInput").each(function (index) {
 		num_occupants += parseInt($(this).val()) || 0;
 	});
-	console.log(num_occupants);
 
 	//Get the livable space amount
 	var private_space = 0;
 	$(".sqFtInput").each(function (index) {
 		private_space += parseFloat($(this).val()) || 0;
 	});
-	console.log(private_space );
 
 	//Figure out how much of the apartment is shared space
 	var all_space = $('#footageInput').val() || 0;
@@ -210,6 +221,18 @@ function update_row_payment(row){
 	row.find("[id^=payment]").text(indv_total_payment);
 }
 
+function update_all_footages(){
+	$(".roomRow").each(function () {
+		update_row_square_footage($(this));
+	});
+}
+
+//Update all the payment categories
+function update_all_payments() {
+	$(".roomRow").each(function () {
+		update_row_payment($(this));
+	});
+}
 
 function check_valid_input(curInput, val, allowedInputs){
 	//Make sure the input value is an int and in the allowed range.
@@ -219,8 +242,34 @@ function check_valid_input(curInput, val, allowedInputs){
 	else{
 		//If the value is incorrect, then we want to reset it.
 		curInput.val("");
+		console.log("Max " + allowedInputs[1]);
+		curInput.placeholder("Max " + allowedInputs[1]);
 		return false
 	}
+}
+
+function check_valid_primary_inputs(input, min, max) {
+	var value = input.val();
+	console.log("input be ",  input);
+
+	console.log("value be ", value);
+	console.log("max be ", max);
+	if (value > max) {
+		input.attr("placeholder", "Max value " + max);
+	}
+	else if (value < min){
+		input.attr("placeholder", "Min value " + min);
+	}
+	else if (!isInt(value)){
+
+		input.attr("placeholder", "Whole numbers only.");
+	}
+	else{
+		return true;
+	}
+	input.val("");
+	input.parent().find("span").css('visibility','hidden');
+	return false;
 }
 
 function display_manual_footage_inputs(row, disabled){
@@ -228,30 +277,6 @@ function display_manual_footage_inputs(row, disabled){
 	//Hide or show the inputs and labels.
 	row.find("input.footage").css('visibility', visibility);
 	row.find("label").css('visibility', visibility);
-}
-
-//Update all values in the footage and percent of total columns
-$('#footage_line').on('input', function () {
-	if (!isInt($(this).val()) || isNaN($(this).val()) || $(this).val().length > 5) {
-		$(this).val("");
-	}
-	update_payments();
-
-});
-
-//Update all values in the footage and percent of total columns
-$('#rent_line').on('input', function () {
-	if (!isInt($(this).val()) || isNaN($(this).val()) || $(this).val().length > 5) {
-		$(this).val("");
-	}
-	update_payments();
-});
-
-//Update all the payment categories
-function update_payments() {
-	$(".roomRow").each(function (index) {
-		update_row_payment($(this));
-	});
 }
 
 //Calculate the area of a room based on the provided inputs
@@ -277,6 +302,16 @@ function calculate_percent_of_total(value, totalValue) {
 	return percentTotal;
 }
 
+//Round a number to two digits and return it.
+function round_to_two_digits(number){
+	return Math.round(number * 100) / 100;
+}
+
+//Check if a number is a whole number
+function isInt(n) {
+	return n % 1 === 0;
+}
+
 $(".calcInput").on('click focus focusout', function (event) {
 	//If they click or gain focus, we want to do a little bit of styling to
 	//Show that they are on this selection.
@@ -298,7 +333,6 @@ $(".calcInput").on('click focus focusout', function (event) {
 		}
 		//Otherwise we do a bit of styling to show that they entered a correct input.
 		else {
-			console.log($(this).prev().prev().css('display', 'inline'));
 			$(this).css({
 				'border': '3px solid #43A047'
 			});
@@ -308,14 +342,3 @@ $(".calcInput").on('click focus focusout', function (event) {
 	}
 
 });
-
-
-//Round a number to two digits and return it.
-function round_to_two_digits(number){
-	return Math.round(number * 100) / 100;
-}
-
-//Check if a number is a whole number
-function isInt(n) {
-	return n % 1 === 0;
-}

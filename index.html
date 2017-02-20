@@ -34,6 +34,7 @@
 			<h1 id="headName">Roomie Split</h1>
 			<div class="links">
 				<a href="explanation.html">Explanation</a>
+				<a href="about.html">About</a>
 			</div>
 		</div>
 	</div>
@@ -59,20 +60,29 @@
 			</div>
 		</div>-->
 		<div class="row inputsRow">
-			<div class="col-md-12">
-				<form class="form-inline" id="calculationForm">
-					<span id="formPreText"> Enter the </span>
-					<div>
-						<label for="numRoomsInput">
-							<span class="inputLabelSpan">Rooms</span>
-							<br>
-							<input type="number" class="calcInput" id="numRoomsInput"
-							       max="10" placeholder="Number of rooms">
-						</label>
+			<h2 class="howToHeader">Figure out how much each roommate should pay.</h2>
+			<h2 class="howToHeader">Fill out the info below.</h2>
 
+
+			<div class="col-md-12 inputs-col">
+
+
+				<form class="form-inline" id="calculationForm">
+
+					<div class="col-md-4 col-sm-12">
+						<div>
+							<label for="numRoomsInput">
+								<span class="inputLabelSpan">Rooms</span>
+								<br>
+								<input type="number" class="calcInput" id="numRoomsInput"
+								       max="10" placeholder="Number of rooms">
+							</label>
+
+						</div>
 					</div>
 
-					<div>
+
+					<div class="col-md-4 col-sm-12">
 						<label for="numRoomsInput">
 							<span class="inputLabelSpan">Square Footage</span>
 							<br>
@@ -82,7 +92,7 @@
 
 					</div>
 
-					<div>
+					<div class="col-md-4 col-sm-12">
 						<label for="numRoomsInput">
 							<span class="inputLabelSpan">Rent</span>
 							<br>
@@ -122,72 +132,6 @@
 				</tr>
 				</thead>
 				<tbody>
-					<tr class="roomRow">
-						<td>1</td>
-
-						<td id="lengthInputs">
-							<input type="number"
-							       min="1"
-							       max="99"
-							       id="lengthFtInput"
-							       placeholder="0">
-							<label for="lengthFtInput">
-								ft
-							</label>
-							<label>
-								<input type="number"
-								       min="1"
-								       max="99"
-								       id="lengthInInput"
-								       placeholder="0">
-								in
-							</label>
-
-						</td>
-
-						<td id="widthInputs">
-							<label>
-								<input type="number"
-								       min="1"
-								       max="99"
-								       id="widthFtInput"
-								       placeholder="0">
-								ft
-							</label>
-							<label>
-								<input type="number"
-								       min="1"
-								       max="99"
-								       id="widthInInput"
-								       placeholder="0">
-								in
-							</label>
-
-						</td>
-
-
-						<td>
-							<input type="number"
-						           min="1"
-						           max="1500"
-						           id="sqFtInput"
-						           placeholder="0">
-						</td>
-
-						<td>
-							<input type="number"
-							       min="1"
-							       max="4"
-							       id="occsInput"
-							       placeholder="0">
-						</td>
-
-						<td>1</td>
-
-
-					</tr>
-
-
 				</tbody>
 			</table>
 		</div>
