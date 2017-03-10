@@ -90,7 +90,13 @@ $('#footageInput').on('input focusout', function (event) {
 $('#rentInput').on('input focusout', function (event) {
 	var $tableRow = $(".tableRow");
 	//Fade the table row in when they start typing.
-	$tableRow.fadeIn("slow");
+	if($('#footageInput').val() > 0 && $('#numRoomsInput').val() > 0){
+		$tableRow.fadeIn("slow");
+	}
+	else{
+		$tableRow.fadeOut("slow");
+	}
+
 	$(this).parent().find("span").css('visibility','visible');
 	//If the enter an invalid input, then fade the table out
 	if(!check_valid_primary_inputs($(this), 1, 25000)){

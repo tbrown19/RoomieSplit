@@ -19,6 +19,7 @@ a:hover, a:visited, a:link, a:active {
     font-family: 'Roboto', sans-serif;
 }
 
+
 a h1{
     font-family: 'Righteous', cursive;
 }
@@ -195,3 +196,23 @@ input[type='number']::-webkit-outer-spin-button {
 .howToHeader{
     transition: visibility 3s ease;
 }
+
+#howItWorks{
+    font-size: 1.1em;
+}
+#howItWorks li{
+    margin-bottom: 3px;
+    color: black;
+}
+
+#howItWorks ul li ul li{
+    margin-bottom: 3px;
+    color: #E71D36;
+}
+
+
+.howItWorksHead{
+    margin-top-top: 0;
+    text-align: center;
+}
+
